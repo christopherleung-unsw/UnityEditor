@@ -8,9 +8,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [InitializeOnLoad]
-public static class ToggleInspectorLockShortcut {
+public static class InspectorLockShortcut {
     const string OverlayName = "inspector-lock-tint-overlay";
-    static readonly Color LockedTint = new(0.55f, 0.08f, 0.08f, 0.1f);
 
     static readonly Type InspectorWindowType =
         typeof(Editor).Assembly.GetType("UnityEditor.InspectorWindow");
@@ -24,7 +23,7 @@ public static class ToggleInspectorLockShortcut {
     static EditorWindow _lastFocusedInspector;
     static readonly Dictionary<int, bool> LastLockStates = new();
 
-    static ToggleInspectorLockShortcut() {
+    static InspectorLockShortcut() {
         Subscribe();
         AssemblyReloadEvents.beforeAssemblyReload += Unsubscribe;
     }
@@ -79,7 +78,7 @@ public static class ToggleInspectorLockShortcut {
             _lastFocusedInspector = null;
     }
 	
-    [MenuItem("Edit/HotKeys/Toggle Lock &q")]
+    [MenuItem("Edit/HotKeys/Inspector Lock &q")]
     static void ToggleInspectorLock() {
         var inspector = GetTargetInspectorWindow();
         if (inspector == null || IsLockedProperty == null)
@@ -206,7 +205,7 @@ public static class ToggleInspectorLockShortcut {
         overlay.style.right = 0;
         overlay.style.top = 0;
         overlay.style.bottom = 0;
-        overlay.style.backgroundColor = LockedTint;
+        overlay.style.backgroundColor = InspectorLockPreferences.TintColor;
         overlay.pickingMode = PickingMode.Ignore;
         root.Add(overlay);
         overlay.BringToFront();
